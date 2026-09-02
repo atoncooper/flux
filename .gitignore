@@ -1,0 +1,129 @@
+# =============================================================================
+# Flux .gitignore
+#
+# 注意：以下文件必须入库，禁止加入忽略清单：
+#   - Cargo.lock（workspace 含二进制产物，锁定依赖版本）
+#   - rust-toolchain.toml / rustfmt.toml / deny.toml（工具链与策略锁定）
+#   - go.mod / go.sum
+#   - deploy/ 下的示例配置（*.example.toml）
+# =============================================================================
+
+# ---- Rust（engine/）构建产物 ----
+target/
+**/*.rs.bk
+
+# cargo-fuzz 产物
+fuzz/artifacts/
+fuzz/coverage/
+fuzz/corpus/
+
+# ---- Go（control/）构建与测试产物 ----
+*.exe
+*.exe~
+*.test
+*.out
+*.pdb
+/bin/
+dist/
+go.work
+go.work.sum
+
+# buf/protoc 生成物不入库（CI 统一生成并校验一致性，见 docs/05 §8 proto.yml）
+**/*.pb.go
+**/*.pb.validate.go
+
+# ---- 覆盖率与性能剖析 ----
+*.profraw
+*.profdata
+coverage/
+coverage.html
+cobertura.xml
+*.cover
+flamegraph.svg
+perf.data
+perf.data.old
+benchmarks/output/
+benchmarks/report/
+
+# ---- 本地运行时数据 ----
+# Master StateStore 默认写 data/flux-master.db；开发跑集群还会产生 shuffle/spill/cache 目录
+/data/
+*.db
+*.db-wal
+*.db-shm
+*.sqlite
+*.sqlite3
+*.sqlite-wal
+/shuffle/
+/spill/
+/cache/
+
+# ---- 大数据文件 ----
+# TPC-H 原始数据（.tbl）与 Parquet/Arrow 数据文件体积大且可再生成，不入库；
+# 小体积测试 fixture 如确需入库：放置于 testdata/ 并用 git add -f
+*.tbl
+*.parquet
+*.arrow
+*.ipc
+*.avro
+*.orc
+**/testdata/generated/
+benchmarks/data/
+
+# ---- 日志 ----
+*.log
+logs/
+
+# ---- 密钥与本地配置 ----
+# 凭证只放本地：对象存储 AK/SK、Token、TLS 私钥（FR-SEC05）
+.env
+.env.*
+*.local.toml
+*.local.yaml
+*.local.yml
+*.secret.*
+# 自签证书与私钥（flux admin cert 输出）；测试用证书 fixture 放 testdata/ 可入库
+*.pem
+*.key
+!**/testdata/**/*.pem
+!**/testdata/**/*.key
+certs/
+# 仅根目录的 tokens 文件（避免误伤 flux-sql 的 tokens.rs 等源码）
+/tokens*
+flux-tokens*
+
+# ---- IDE / 编辑器 ----
+.idea/
+*.iml
+.vscode/*
+!.vscode/extensions.json
+
+# ---- 编辑器临时文件 ----
+*.swp
+*.swo
+*~
+*.bak
+*.tmp
+*.orig
+
+# ---- 操作系统 ----
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+~$*
+
+# ---- 测试运行产物 ----
+test-results/
+junit*.xml
+
+# ---- Python（scripts/ 辅助脚本，如有）----
+__pycache__/
+*.pyc
+
+# ---- Node / Web UI（M3 启用 ui/ 时取消注释）----
+# node_modules/
+# ui/dist/
+# ui/.vite/
