@@ -96,4 +96,4 @@ docs/      需求与设计文档；tests/ 端到端测试；benchmarks/ 基准�
 
 ## License
 
-TBD（计划 Apache-2.0，开源时机见 PRD 开放问题 Q1）。
+[Apache-2.0](LICENSE)。注意：项目名与 CNCF Flux 的重名问题（PRD 开放问题 Q4）尚未定案。
