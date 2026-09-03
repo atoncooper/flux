@@ -1,8 +1,14 @@
 [workspace]
 resolver = "2"
-members = ["crates/worker"]
+members = ["crates/exec", "crates/worker"]
 
 [workspace.package]
 version = "0.1.0"
 edition = "2024"
 publish = false
+
+[workspace.dependencies]
+arrow = "59"
+arrow-array = "59"
+arrow-buffer = "59"
+criterion = "0.8"

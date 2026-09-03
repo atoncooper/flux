@@ -1,0 +1,17 @@
+[package]
+name = "flux-exec"
+version.workspace = true
+edition.workspace = true
+publish.workspace = true
+
+[dependencies]
+arrow-array.workspace = true
+arrow-buffer.workspace = true
+
+[dev-dependencies]
+arrow.workspace = true
+criterion.workspace = true
+
+[[bench]]
+name = "kernel"
+harness = false
